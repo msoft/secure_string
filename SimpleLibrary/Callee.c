@@ -1,6 +1,6 @@
 #include <phbase.h>
 #include <memsrch.h>
-#include <SearchMemory.h>
+#include <Callee.h>
 #include <stdlib.h>
 
 const REPLACED_MEMORY_STRINGS *ConvertToReplacedMemoryStrings(const MEMORY_STRING_RESULTS *stringResults)
@@ -11,13 +11,13 @@ const REPLACED_MEMORY_STRINGS *ConvertToReplacedMemoryStrings(const MEMORY_STRIN
 	MEMORY_STRING_RESULT *stringResult = stringResults->FirstString;
 	while (stringResult != NULL)
 	{
-		REPLACED_MEMORY_STRINGS *replacedString = malloc(sizeof(*replacedString));
+		REPLACED_MEMORY_STRING *replacedString = malloc(sizeof(*replacedString));
 		replacedString->Address = stringResult->Address;
 		replacedString->BaseAddress = stringResult->BaseAddress;
 		replacedString->IsWide = stringResult->IsWide;
 		replacedString->Length = stringResult->Length;
 
-		replacedString->Next = replacedString->FirstString;
+		replacedString->Next = replacedStrings->FirstString;
 		replacedStrings->FirstString = replacedString;
 
 		stringResult = stringResult->Next;

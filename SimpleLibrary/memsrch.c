@@ -1,7 +1,5 @@
-
-
 #include <phbase.h>
-#include <memsrch.h
+#include <memsrch.h>
 
 #define WM_PH_MEMORY_STATUS_UPDATE (WM_APP + 301)
 
@@ -10,7 +8,7 @@
 
 PVOID PhMemorySearchHeap = NULL;
 LONG PhMemorySearchHeapRefCount = 0;
-PH_QUEUED_LOCK PhMemorySearchHeapLock = PH_QUEUED_LOCK_INT;
+PH_QUEUED_LOCK PhMemorySearchHeapLock = PH_QUEUED_LOCK_INIT;
 
 MEMORY_STRING_RESULTS *AllocateMemoryStringResults()
 {
@@ -23,7 +21,7 @@ VOID AllocateNewMemoryStringResult(MEMORY_STRING_RESULTS *foundStringAddresses, 
 	ULONG length, BOOLEAN isWide)
 {
 	MEMORY_STRING_RESULT *newString = malloc(sizeof(*newString));
-	if (newString == null)
+	if (newString == NULL)
 	{
 		return;
 	}
@@ -31,7 +29,7 @@ VOID AllocateNewMemoryStringResult(MEMORY_STRING_RESULTS *foundStringAddresses, 
 	newString->BaseAddress = baseAddress;
 	newString->Address = address;
 	newString->Length = length;
-	newString->IsWide - isWide;
+	newString->IsWide = isWide;
 
 	newString->Next = foundStringAddresses->FirstString;
 	foundStringAddresses->FirstString = newString;
@@ -79,14 +77,13 @@ const MEMORY_STRING_RESULTS *FindStringWithinProcessMemory(DWORD processId, PWCH
 
 	ULONG memoryTypeMask = 0;
 	if (searchPrivateString)
-		memoryTypeMask ⎪= MEM_PRIVATE;
+		memoryTypeMask |= MEM_PRIVATE;
 	if (searchImageString)
-		memoryTypeMask ⎪= MEM_IMAGE;
+		memoryTypeMask |= MEM_IMAGE;
 	if (searchMappedString)
-		memoryTypeMask ⎪= MEM_MAPPED;
+		memoryTypeMask |= MEM_MAPPED;
 
-	const MEMORY_STRING_RESULTS *foundStrings = FindMemoryStrings(stringToFind, processHandle, memoryTypeMask, 
-		detectUnicode, extentedUnicode);
+	const MEMORY_STRING_RESULTS *foundStrings = FindMemoryStrings(stringToFind, processHandle, memoryTypeMask, detectUnicode, extentedUnicode);
 
 	NtClose(processHandle);
 
@@ -277,7 +274,7 @@ const MEMORY_STRING_RESULTS *FindMemoryStrings(
 								if (byte == charToCompare)
 								{
 									if (searchIndex >= stringLength - 1)
-										stringFound = TRUE
+										stringFound = TRUE;
 									else
 										searchIndex++;
 								}
@@ -536,7 +533,7 @@ const MEMORY_STRING_RESULTS *ReplaceStringWithinProcessMemory(DWORD processId,
 
 VOID FreeMemoryStrings(const MEMORY_STRING_RESULTS *strings)
 {
-	if (strings->FirstString = NULL) return;
+	if (strings->FirstString == NULL) return;
 
 	MEMORY_STRING_RESULT *currentString = strings->FirstString;
 	while (currentString != NULL)
