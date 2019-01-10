@@ -18,7 +18,7 @@ List<ReplacedString ^> ^MemoryStringEraser::EraseString(String ^stringToFind, in
 }
 
 List<ReplacedString ^> ^MemoryStringEraser::ConvertToReplacedStringsAndFreeAllocatedMemory(
-	const REPLACED_MEMORY_STRINGS $replacedStrings)
+	const REPLACED_MEMORY_STRINGS *replacedStrings)
 {
 	List<ReplacedString ^> ^convertedStrings = gcnew List<ReplacedString ^>();
 
@@ -26,7 +26,7 @@ List<ReplacedString ^> ^MemoryStringEraser::ConvertToReplacedStringsAndFreeAlloc
 	while (replacedMemoryString != nullptr)
 	{
 		IntPtr replacedStringBaseAddress(replacedMemoryString->BaseAddress);
-		IntPtr ReplacedStringAddress(replacedMemoryString->Address);
+		IntPtr replacedStringAddress(replacedMemoryString->Address);
 
 		ReplacedString ^convertedString = gcnew ReplacedString(replacedStringAddress, replacedStringBaseAddress,
 			replacedMemoryString->Length, replacedMemoryString->IsWide);

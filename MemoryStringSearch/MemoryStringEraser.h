@@ -17,7 +17,8 @@ extern "C"
 		REPLACED_MEMORY_STRING *Next;
 	};
 
-	typedef struct _REPLACED_MEMORY_STRINGS
+	typedef struct _REPLACED_MEMORY_STRINGS REPLACED_MEMORY_STRINGS;
+	struct _REPLACED_MEMORY_STRINGS
 	{
 		REPLACED_MEMORY_STRING *FirstString;
 	};
@@ -30,7 +31,7 @@ public ref class MemoryStringEraser
 {
 public:
 	MemoryStringEraser();
-	List<ReplacedString ^> EraseString(String ^stringToFind, int processId);
+	List<ReplacedString ^> ^EraseString(String ^stringToFind, int processId);
 
 private:
 	List<ReplacedString ^> ^ConvertToReplacedStringsAndFreeAllocatedMemory(const REPLACED_MEMORY_STRINGS *replacedStrings);
